@@ -15,7 +15,7 @@ type Product struct {
 func SelectAllProducts() []Product {
 	db := db.ConectDataBase()
 
-	selectAllProducts, err := db.Query("select * from produtos")
+	selectAllProducts, err := db.Query("select * from produtos order by id asc")
 	if err != nil {
 		panic(err.Error())
 	}
