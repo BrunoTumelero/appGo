@@ -47,3 +47,35 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/", 301)
 }
+
+func Edit(w http.ResponseWriter, r *http.Request) {
+	idProduct := r.URL.Query().Get("id")
+	product := models.EditProduct(idProduct)
+	temp.ExecuteTemplate(w, "Edit", product)
+}
+
+func Update(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "Post" {
+		id := r.FormValue("id")
+		name := r.FormValue("name")
+		description := r.FormValue("description")
+		amount := r.FormValue("amount")
+		value := r.FormValue("value")
+
+		idConverted, err := strconv.Atoi(id)
+		if err != nil {
+			log.Println("Erro de converção Id", err)
+		}
+		valueConverted, err := strconv.ParseFloat(value, 64)
+		if err != nil {
+			log.Println("Erro de converção value", err)
+		}
+		amountConverted, err := strconv.Atoi(amount)
+		if err != nil {
+			log.Println("Erro de converção amount", err)
+		}
+
+		models.UpdateProduct(idConverted, amountConverted, name, description, valueConverted)
+	}
+	http.Redirect(w, r, "/", 301)
+}
